@@ -17,6 +17,12 @@ clientName.addEventListener('change', (e) => {
   console.log(newForm.clientName);
 })
 
+let address = document.querySelector('input#address')
+address.addEventListener('change', (e) => {
+	newForm.address = e.target.value;
+  console.log(newForm.address);
+})
+
 let caregiverSignature = document.querySelector('input#caregiverSignature')
 caregiverSignature.addEventListener('change', (e) => {
 	newForm.caregiverSignature = e.target.value;
