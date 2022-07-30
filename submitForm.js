@@ -42,7 +42,9 @@ date.addEventListener('change', (e) => {
 })
   
 document.getElementById('submit').addEventListener("click", async (event) => {
-    submitForm(newForm, formName)
+  submitForm(newForm, formName);
+  message = 'Complete the <br/><a href="/forms/release-of-liability-form">Release of Liability Form</a>'
+  removeNotice(newForm.clientName, message)
 })
 
 async function submitForm(data, form) {
@@ -78,3 +80,28 @@ function showError(err) {
     console.error
     document.getElementById('returnMessage').innerHTML = `An error occurred when submitting this form, which was ${err}. Please contact the administrator for help.`
 }
+
+async function removeNotice(name, message) {
+  const url = 'https://pffm.azurewebsites.net/notices'
+  let data = {
+    clientName: name,
+    notice: message
+  }
+  fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      },
+      body: JSON.stringify(data)
+    })
+    .then((response) => {
+      if (response != 500 || response != 403) {
+        console.log('deleted', sessionStorage.getItem('userName'))
+      }
+      //location.href = 'https://phoenix-freedom-foundation-backend.webflow.io/client-portal'
+    })
+    .catch(console.error)
+}
+
+
