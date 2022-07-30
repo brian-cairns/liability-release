@@ -44,7 +44,7 @@ date.addEventListener('change', (e) => {
 document.getElementById('submit').addEventListener("click", async (event) => {
   submitForm(newForm, formName);
   message = 'Complete the <br/><a href="/forms/release-of-liability-form">Release of Liability Form</a>'
-  removeNotice(newForm.clientName, message)
+  //removeNotice(newForm.clientName, message)
 })
 
 async function submitForm(data, form) {
