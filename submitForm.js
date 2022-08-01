@@ -3,12 +3,14 @@ console.log(submit)
 const formName = 'liabilityRelease'
 console.log('form: ' + formName)
 let newForm = {}
+let client = ''
 
 let caregiverName = document.querySelector('input#caregiverName')
 caregiverName.addEventListener('change', (e) => {
 	console.log('changed')
 	newForm.caregiverName = e.target.value;
   console.log(newForm.caregiverName);
+	cleint = newForm.caregiverName
   })
   
 let clientName = document.querySelector('input#clientName')
