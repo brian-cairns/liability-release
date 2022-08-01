@@ -42,10 +42,15 @@ date.addEventListener('change', (e) => {
 })
   
 document.getElementById('submit').addEventListener("click", async (event) => {
-  submitForm(newForm, formName);
-  message = 'Complete the <br/><a href="/forms/release-of-liability-form">Release of Liability Form</a>'
-  //removeNotice(newForm.clientName, message)
+  submitForm(newForm, 'newClientIntake')
+  sessionStorage.setItem('userName', newForm.clientName)
+  updateClient(newForm)
+  const message = '<p>Complete the <a href="/forms/new-client-intake-form">Release of Liability Form</a></p>'
+  removeNotice(newForm.clientName, message)
 })
+
+let printForm = document.getElementById('printToPDF')
+printForm.style.display = 'none'
 
 async function submitForm(data, form) {
   const document = {
@@ -61,25 +66,34 @@ async function submitForm(data, form) {
     },
     body: JSON.stringify(document)
   })
-    .then((response) => {
-      if (response.status == 200) {
-      showSuccess()
-      } else {
-        showError(response.body)
-      }
-    })
+    .then(response => response.json())
+    .then(data => respond(data)) 
     .catch((err) => showError(err))
 }
 
-
-function showSuccess() {
-    document.getElementById('returnMessage').innerHTML = 'Form has been successfully submitted'
+function respond(data) {
+  let formId = data.formId
+  if (formId) {
+    showSuccess(formId) 
+  } else {
+    showError(data.error)
+  }
 }
+
+function showSuccess(formId) {
+  document.getElementById('returnMessage').innerHTML = 'Form has been successfully submitted'
+  printForm.style.display = 'inline';
+  printForm.addEventListener('click', (e) => {
+  location.href = `https://phoenix-freedom-foundation-backend.webflow.io/completed-forms/liabilityRelease?id=${client}`
+  })
+}
+
 
 function showError(err) {
     console.error
     document.getElementById('returnMessage').innerHTML = `An error occurred when submitting this form, which was ${err}. Please contact the administrator for help.`
 }
+
 
 async function removeNotice(name, message) {
   const url = 'https://pffm.azurewebsites.net/notices'
